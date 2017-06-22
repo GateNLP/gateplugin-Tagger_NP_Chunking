@@ -139,6 +139,19 @@ public class GATEWrapper extends AbstractLanguageAnalyser {
 		return annotationName;
 	}
 
+	@RunTime
+	@Optional
+	@CreoleParameter(comment = "Throw an exception when there are none of the required input annotations", defaultValue = "true")
+	public void setFailOnMissingInputAnnotations(Boolean fail) {
+		failOnMissingInputAnnotations = fail;
+	}
+
+	public Boolean getFailOnMissingInputAnnotations() {
+		return failOnMissingInputAnnotations;
+	}
+
+	protected boolean failOnMissingInputAnnotations = true;
+
 	public Resource init() throws ResourceInstantiationException {
 		if (rulesURL == null) {
 			throw new ResourceInstantiationException(
@@ -350,7 +363,7 @@ public class GATEWrapper extends AbstractLanguageAnalyser {
 							.getInstance()
 							.format((double) (System.currentTimeMillis() - startTime) / 1000)
 					+ " seconds!");
-		} else {
+		} else if (failOnMissingInputAnnotations) {
 			// if there are no sentence annotations then throw an exception as
 			// theres
 			// not much we can do
