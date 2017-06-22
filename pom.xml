@@ -14,7 +14,7 @@
 	
 	<!-- this is the description of this plugin -->
 	<groupId>uk.ac.gate.plugins</groupId>
-	<artifactId>tagger-np-chunker</artifactId>
+	<artifactId>tagger-np-chunking</artifactId>
 	<version>8.5-SNAPSHOT</version>
 
 	<licenses>
