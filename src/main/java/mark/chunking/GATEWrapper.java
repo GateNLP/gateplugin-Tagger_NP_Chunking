@@ -188,9 +188,6 @@ public class GATEWrapper extends AbstractLanguageAnalyser {
 				// get the next line from the data file
 				line = in.readLine();
 			}
-
-			// close the data file now we have finished with it
-			in.close();
 		} catch (IOException e) {
 			// if an error occurred then throw an exception so that the user
 			// knows
