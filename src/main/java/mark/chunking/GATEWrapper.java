@@ -19,24 +19,9 @@
 
 package mark.chunking;
 
-import gate.Annotation;
-import gate.AnnotationSet;
-import gate.Factory;
-import gate.FeatureMap;
-import gate.Resource;
-import gate.creole.AbstractLanguageAnalyser;
-import gate.creole.ExecutionException;
-import gate.creole.ResourceInstantiationException;
-import gate.creole.metadata.CreoleParameter;
-import gate.creole.metadata.CreoleResource;
-import gate.creole.metadata.Optional;
-import gate.creole.metadata.RunTime;
-import gate.util.BomStrippingInputStreamReader;
-import gate.util.GateRuntimeException;
-import gate.util.OffsetComparator;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -45,6 +30,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import gate.Annotation;
+import gate.AnnotationSet;
+import gate.Factory;
+import gate.FeatureMap;
+import gate.Resource;
+import gate.creole.AbstractLanguageAnalyser;
+import gate.creole.ExecutionException;
+import gate.creole.ResourceInstantiationException;
+import gate.creole.ResourceReference;
+import gate.creole.metadata.CreoleParameter;
+import gate.creole.metadata.CreoleResource;
+import gate.creole.metadata.Optional;
+import gate.creole.metadata.RunTime;
+import gate.util.BomStrippingInputStreamReader;
+import gate.util.GateRuntimeException;
+import gate.util.OffsetComparator;
 
 @CreoleResource(name = "Noun Phrase Chunker", comment = "Implementation of the Ramshaw and Marcus base noun phrase chunker", helpURL = "http://gate.ac.uk/userguide/sec:parsers:npchunker", icon = "NpChunker")
 public class GATEWrapper extends AbstractLanguageAnalyser {
@@ -55,25 +57,43 @@ public class GATEWrapper extends AbstractLanguageAnalyser {
 
 	private Map<String, String> chunkTags = null;
 
-	private URL posTagURL;
+	private ResourceReference posTagURL;
 
 	@CreoleParameter(defaultValue = "resources/pos_tag_dict", comment = "The URL of the pos_tag_dict file.")
-	public void setPosTagURL(URL posTagURL) {
+	public void setPosTagURL(ResourceReference posTagURL) {
 		this.posTagURL = posTagURL;
 	}
+	
+	@Deprecated
+	public void setPosTagURL(URL posTagURL) {
+	  try {
+      this.setPosTagURL(new ResourceReference(posTagURL));
+    } catch(URISyntaxException e) {
+      throw new RuntimeException("Error converting URL to ResourceReference",e);
+    }
+  }
 
-	public URL getPosTagURL() {
+	public ResourceReference getPosTagURL() {
 		return posTagURL;
 	}
 
-	private URL rulesURL;
+	private ResourceReference rulesURL;
 
 	@CreoleParameter(defaultValue = "resources/rules", comment = "The URL of the rules file.")
-	public void setRulesURL(URL rulesURL) {
+	public void setRulesURL(ResourceReference rulesURL) {
 		this.rulesURL = rulesURL;
 	}
+	
+	@Deprecated
+	public void setRulesURL(URL rulesURL) {
+	  try {
+      this.setRulesURL(new ResourceReference(rulesURL));
+    } catch(URISyntaxException e) {
+      throw new RuntimeException("Error converting URL to ResourceReference",e);
+    }
+  }
 
-	public URL getRulesURL() {
+	public ResourceReference getRulesURL() {
 		return rulesURL;
 	}
 
@@ -167,7 +187,7 @@ public class GATEWrapper extends AbstractLanguageAnalyser {
 				posTagURL.openStream())) {
 			// lets create a new Chunker using the URL provided (which we know
 			// is not null as we already checked it).
-			c = new Chunker(rulesURL);
+			c = new Chunker(rulesURL.toURL());
 
 			// read in the first line of the file
 			String line = in.readLine();
