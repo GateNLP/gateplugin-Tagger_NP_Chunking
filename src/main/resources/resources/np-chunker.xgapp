@@ -8,7 +8,7 @@
       </gate.creole.Plugin-Maven>
       <gate.creole.Plugin-Maven>
         <group>uk.ac.gate.plugins</group>
-        <artifact>tagger-np_chunker</artifact>
+        <artifact>tagger-np-chunking</artifact>
         <version>8.5-SNAPSHOT</version>
       </gate.creole.Plugin-Maven>
     </localList>
