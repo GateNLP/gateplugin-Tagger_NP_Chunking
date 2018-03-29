@@ -16,6 +16,9 @@
 	<groupId>uk.ac.gate.plugins</groupId>
 	<artifactId>tagger-np-chunking</artifactId>
 	<version>8.5-SNAPSHOT</version>
+	
+	<name>Tagger NP Chunking</name>
+	<description>A GATE based implementation of the Ramshaw and Marcaus BaseNP chunker</description>
 
 	<licenses>
 		<license>
